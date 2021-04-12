@@ -8,7 +8,6 @@ import Habilidades from './Pages/Habilidades';
 import Sobre from './Pages/Sobre';
 
 function App() {
-  // test
   return (
     <ProviderPages>
       <Switch>

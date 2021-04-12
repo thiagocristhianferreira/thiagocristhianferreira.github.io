@@ -1,8 +1,8 @@
 import React from 'react';
-import fb from '../ico_rs/facebook.png';
-import ld from '../ico_rs/linkedinCor.png';
-import gh from '../ico_rs/github.png';
-import wp from '../ico_rs/whatsapp.png';
+import fb from '../ico_rs/facebook1.png';
+import ld from '../ico_rs/linkedinCor1.png';
+import gh from '../ico_rs/github1.png';
+import wp from '../ico_rs/whatsapp1.png';
 
 function Footer() {
   return (
