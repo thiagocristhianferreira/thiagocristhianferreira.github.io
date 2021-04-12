@@ -5,7 +5,7 @@ import Footer from '../Components/Footer';
 function Home() {
   return (
     <div
-      style={{width: '90%', marginTop: '15%'}}
+      style={{width: '90%', marginTop: '12%'}}
     >
       <Header />
       <main role="main" className="inner cover">
