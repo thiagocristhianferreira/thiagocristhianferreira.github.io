@@ -7,7 +7,9 @@ function Projetos() {
   return (
     <div>
       <Header />
-      <h1 style={{marginTop: '45%'}}>Projetos</h1>      
+      <div style={{marginTop: '100px'}}>
+        <h1>Projetos</h1>      
+      </div>
       <Footer />
     </div>
   )

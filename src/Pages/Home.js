@@ -4,9 +4,7 @@ import Footer from '../Components/Footer';
 
 function Home() {
   return (
-    <div
-      style={{width: '90%', marginTop: '12%'}}
-    >
+    <div style={{marginTop: '12%'}}>
       <Header />
       <main role="main" className="inner cover">
       <div className="media">
@@ -27,18 +25,22 @@ function Home() {
         </div>
       </div>
       <div className="mt-5 d-flex justify-content-around">
-        <button
-          type="button"
-          className="btn btn-lg btn-outline-success"
-        >
-          Meus Projetos
-        </button>
-        <button
-          type="button"
-          className="btn btn-lg btn-outline-success"
-        >
-          Minhas Habilidades
-        </button>
+        <div className="zoom">
+          <button
+            type="button"
+            className="btn btn-lg btn-outline-success"
+          >
+            Meus Projetos
+          </button>
+        </div>
+        <div className="zoom">
+          <button
+            type="button"
+            className="btn btn-lg btn-outline-success"
+          >
+            Minhas Habilidades
+          </button>
+        </div>
       </div>
       </main>
       <Footer />

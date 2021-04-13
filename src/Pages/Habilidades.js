@@ -3,11 +3,12 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 
 function Habilidades() {
-  //test
   return (
     <div>
       <Header />
-      <h1 style={{marginTop: '45%'}}>Habilidades</h1>      
+      <div style={{marginTop: '100px'}}>
+        <h1>Habilidades</h1>
+      </div>
       <Footer />
     </div>
   )

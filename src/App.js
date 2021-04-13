@@ -6,6 +6,7 @@ import Home from './Pages/Home';
 import Projetos from './Pages/Projetos';
 import Habilidades from './Pages/Habilidades';
 import Sobre from './Pages/Sobre';
+import './App.css';
 
 function App() {
   return (
