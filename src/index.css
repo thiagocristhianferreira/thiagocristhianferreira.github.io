@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Depois, regras de estilo padrão */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -33,6 +39,9 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 /* Estilo para h1 */

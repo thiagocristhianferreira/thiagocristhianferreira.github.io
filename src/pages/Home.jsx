@@ -1,7 +1,7 @@
 function Home() {
     return (
-        <div className="flex items-center justify-center text-center p-6 min-h-screen z-20">
-            <div className="fixed top-20 bg-white bg-opacity-70 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-2xl max-w-3xl w-full flex flex-col items-center">
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] pt-6 px-4 w-screen">
+            <div className="max-w-3xl w-full mx-auto bg-white bg-opacity-70 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-2xl flex flex-col items-center text-center">
                 <img
                     src="/foto.jpg"
                     alt="Minha Foto"
