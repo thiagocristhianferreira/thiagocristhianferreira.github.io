@@ -1,7 +1,7 @@
 function Curriculo() {
     return (
-        <div className="bg-gray-100 min-h-screen text-gray-800 p-8 font-sans">
-            <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8 space-y-6">
+        <div className="flex items-center justify-center min-h-screen pt-24 px-4 w-screen text-gray-800 font-sans">
+            <div className="max-w-3xl w-full mx-auto bg-white bg-opacity-70 backdrop-blur-md shadow-2xl rounded-2xl p-8 md:p-10 space-y-6">
                 <header className="text-center">
                     <h1 className="text-4xl font-bold text-blue-800">Thiago Cristhian Ferreira</h1>
                     <p className="mt-2 text-sm">thiagocristhian@gmail.com • (16) 99292-3943</p>
