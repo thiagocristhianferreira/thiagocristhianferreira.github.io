@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { forwardRef, useRef, useMemo, useLayoutEffect } from 'react';
+import { forwardRef, useRef, useMemo, useLayoutEffect, useEffect, useState } from 'react';
 import { Color } from 'three';
 
 const hexToNormalizedRGB = hex => {
@@ -69,8 +69,29 @@ void main() {
 }
 `;
 
-const SilkPlane = forwardRef(function SilkPlane({ uniforms }, ref) {
-  const { viewport } = useThree();
+// Detecta se a animação deve ficar "passiva" (estática) — em telas pequenas/touch
+// ou quando o usuário pede menos movimento. Nesses casos o canvas só renderiza
+// sob demanda (na troca de tema), em vez de rodar todo frame.
+function usePassiveAnimation() {
+  const [passive, setPassive] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 768px)');
+    const update = () => setPassive(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return passive;
+}
+
+const SilkPlane = forwardRef(function SilkPlane(
+  { uniforms, color, speed, scale, noiseIntensity, rotation, animate },
+  ref
+) {
+  const { viewport, invalidate } = useThree();
+
+  // Cor-alvo: muda só quando o tema troca. Não recria o material.
+  const targetColor = useMemo(() => new Color(...hexToNormalizedRGB(color)), [color]);
 
   useLayoutEffect(() => {
     if (ref.current) {
@@ -78,8 +99,38 @@ const SilkPlane = forwardRef(function SilkPlane({ uniforms }, ref) {
     }
   }, [ref, viewport]);
 
+  // Sincroniza uniforms escalares mutando o objeto existente (sem recriar material).
+  useEffect(() => {
+    uniforms.uSpeed.value = speed;
+    uniforms.uScale.value = scale;
+    uniforms.uNoiseIntensity.value = noiseIntensity;
+    uniforms.uRotation.value = rotation;
+    invalidate();
+  }, [uniforms, speed, scale, noiseIntensity, rotation, invalidate]);
+
+  // Ao trocar a cor (tema), pede frames para animar a transição mesmo em modo "demand".
+  useEffect(() => {
+    invalidate();
+  }, [targetColor, invalidate]);
+
   useFrame((_, delta) => {
-    ref.current.material.uniforms.uTime.value += 0.1 * delta;
+    const mat = ref.current?.material;
+    if (!mat) return;
+    const u = mat.uniforms;
+
+    // O tempo só avança quando estamos animando de fato (respeita aba oculta /
+    // reduced-motion / mobile). Em modo estático o padrão fica congelado.
+    if (animate) u.uTime.value += 0.1 * delta;
+
+    // Lerp suave da cor atual rumo à cor-alvo — transição de tema sem tranco.
+    const cur = u.uColor.value;
+    const dist = Math.abs(cur.r - targetColor.r) + Math.abs(cur.g - targetColor.g) + Math.abs(cur.b - targetColor.b);
+    if (dist > 0.001) {
+      cur.lerp(targetColor, Math.min(1, delta * 5));
+      if (!animate) invalidate(); // em modo "demand", encadeia frames até estabilizar
+    } else if (!cur.equals(targetColor)) {
+      cur.copy(targetColor);
+    }
   });
 
   return (
@@ -93,7 +144,11 @@ SilkPlane.displayName = 'SilkPlane';
 
 const Silk = ({ speed = 5, scale = 1, color = '#7B7481', noiseIntensity = 1.5, rotation = 0, dpr = [1, 2] }) => {
   const meshRef = useRef();
+  const passive = usePassiveAnimation();
+  const [frameloop, setFrameloop] = useState('always');
 
+  // Uniforms criados UMA única vez. Trocar de tema nunca recria o material WebGL
+  // (que era o que travava no clique) — só atualizamos os valores in-place.
   const uniforms = useMemo(
     () => ({
       uSpeed: { value: speed },
@@ -103,12 +158,34 @@ const Silk = ({ speed = 5, scale = 1, color = '#7B7481', noiseIntensity = 1.5, r
       uRotation: { value: rotation },
       uTime: { value: 0 }
     }),
-    [speed, scale, noiseIntensity, color, rotation]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
+  // Pausa a renderização quando a aba está oculta; em mobile/reduced-motion fica
+  // sob demanda; no desktop visível anima continuamente.
+  useEffect(() => {
+    const apply = () => {
+      if (document.hidden) setFrameloop('never');
+      else setFrameloop(passive ? 'demand' : 'always');
+    };
+    apply();
+    document.addEventListener('visibilitychange', apply);
+    return () => document.removeEventListener('visibilitychange', apply);
+  }, [passive]);
+
   return (
-    <Canvas dpr={dpr} frameloop="always">
-      <SilkPlane ref={meshRef} uniforms={uniforms} />
+    <Canvas dpr={dpr} frameloop={frameloop}>
+      <SilkPlane
+        ref={meshRef}
+        uniforms={uniforms}
+        color={color}
+        speed={speed}
+        scale={scale}
+        noiseIntensity={noiseIntensity}
+        rotation={rotation}
+        animate={frameloop === 'always'}
+      />
     </Canvas>
   );
 };
