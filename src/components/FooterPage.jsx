@@ -1,45 +1,34 @@
 import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
+const links = [
+    { href: "https://wa.me/5516992923943", icon: FaWhatsapp, title: "Falar no WhatsApp", hover: "hover:text-emerald-500" },
+    { href: "https://www.linkedin.com/in/thiago-c-ferreira/", icon: FaLinkedin, title: "Meu LinkedIn", hover: "hover:text-brand-600" },
+    { href: "https://github.com/thiagocristhianferreira", icon: FaGithub, title: "Meu GitHub", hover: "hover:text-slate-900 dark:hover:text-white" },
+    { href: "mailto:thiagocristhian@gmail.com", icon: FaEnvelope, title: "Enviar um e-mail", hover: "hover:text-rose-500" },
+];
+
 function FooterPage() {
     return (
-        <footer className="fixed bottom-0 left-0 w-full bg-black bg-opacity-60 shadow p-4 z-50">
-            <div className="flex justify-center items-center gap-8 text-2xl">
-                <a
-                    href="https://wa.me/5516992923943"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-green-500 hover:text-green-600 transition-transform transform hover:scale-150 duration-300 ease-in-out"
-                    title="Falar no WhatsApp"
-                >
-                    <FaWhatsapp />
-                </a>
-                <a
-                    href="https://www.linkedin.com/in/thiago-c-ferreira/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700 transition-transform transform hover:scale-150 duration-300 ease-in-out"
-                    title="Meu LinkedIn"
-                >
-                    <FaLinkedin />
-                </a>
-                <a
-                    href="https://github.com/thiagocristhianferreira"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-800 hover:text-black transition-transform transform hover:scale-150 duration-300 ease-in-out"
-                    title="Meu GitHub"
-                >
-                    <FaGithub />
-                </a>
-                <a
-                    href="mailto:thiagocristhian@gmail.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-red-500 hover:text-red-600 transition-transform transform hover:scale-150 duration-300 ease-in-out"
-                    title="Enviar um e-mail"
-                >
-                    <FaEnvelope />
-                </a>
+        <footer className="relative z-10 mt-auto border-t border-white/60 bg-white/60 backdrop-blur-md dark:border-white/10 dark:bg-slate-900/60">
+            <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 py-6">
+                <div className="flex items-center gap-6 text-xl text-slate-500 dark:text-slate-400">
+                    {links.map(({ href, icon: Icon, title, hover }) => (
+                        <a
+                            key={href}
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={title}
+                            aria-label={title}
+                            className={`transition-all duration-300 hover:-translate-y-0.5 ${hover}`}
+                        >
+                            <Icon />
+                        </a>
+                    ))}
+                </div>
+                <p className="text-xs text-slate-400 dark:text-slate-500">
+                    © {new Date().getFullYear()} Thiago Cristhian Ferreira — Desenvolvido com React & Tailwind
+                </p>
             </div>
         </footer>
     );

@@ -1,63 +1,87 @@
-function Home() {
-    const techs = [
-        "React", "Vue.js", "Node.js", "TypeScript", "Java", "PHP",
-        "MySQL", "MongoDB", "Git", "Grafana", "Figma", "Linux/Unix",
-    ];
+import { motion } from "framer-motion";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 
+const techs = [
+    "Java", "Spring", "Node.js", ".NET", "NestJS",
+    "TypeScript", "JavaScript", "Vue.js", "React", "Redux", "Context API", "Next.js",
+    "PHP", "MySQL", "MongoDB", "Git", "Grafana", "Figma", "Linux/Unix",
+];
+
+const container = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+};
+const item = {
+    hidden: { opacity: 0, y: 16 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
+function Home() {
     return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] pt-20 pb-8 px-4 w-screen">
-            <div className="max-w-3xl w-full mx-auto bg-white bg-opacity-70 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-2xl flex flex-col items-center text-center">
-                <img
+        <div className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 pb-16 pt-28">
+            <motion.div
+                variants={container}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, y: -12 }}
+                className="flex w-full max-w-2xl flex-col items-center rounded-3xl border border-white/70 bg-white/80 p-8 text-center shadow-soft-lg backdrop-blur-md dark:border-white/10 dark:bg-slate-800/70 md:p-12"
+            >
+                <motion.img
+                    variants={item}
                     src="/foto.jpg"
                     alt="Thiago Cristhian Ferreira"
-                    className="rounded-full w-36 h-36 md:w-44 md:h-44 object-cover mb-6 shadow-lg border-4 border-blue-700"
+                    className="mb-6 h-36 w-36 rounded-full object-cover shadow-soft ring-4 ring-brand-100 dark:ring-brand-500/30 md:h-44 md:w-44"
                 />
 
-                <h2 className="text-3xl md:text-4xl font-bold mb-1 text-gray-900">Thiago Cristhian Ferreira</h2>
-                <p className="text-blue-700 font-semibold text-lg mb-4">Desenvolvedor Fullstack Sênior</p>
+                <motion.h2 variants={item} className="font-display text-3xl font-bold text-slate-900 dark:text-white md:text-4xl">
+                    Thiago Cristhian Ferreira
+                </motion.h2>
+                <motion.p variants={item} className="mt-1 bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-lg font-semibold text-transparent">
+                    Desenvolvedor Full Stack Sênior
+                </motion.p>
 
-                <p className="max-w-xl text-gray-700 mb-4 px-2 leading-relaxed">
-                    Desenvolvedor Full Stack desde 2020 e com experiência desde 2021 na <strong>Sumicity Telecomunicações</strong>,
+                <motion.p variants={item} className="mt-5 max-w-xl px-2 leading-relaxed text-slate-600 dark:text-slate-300">
+                    Desenvolvedor Full Stack desde 2020 e com experiência desde 2021 na <strong className="font-semibold text-slate-800 dark:text-slate-100">Sumicity Telecomunicações</strong>,
                     atuando no desenvolvimento e manutenção de sistemas, integrações via API,
                     testes funcionais e migrações de dados — reduzindo o tempo de migração de empresas
-                    adquiridas de <strong>1 mês para 3 dias</strong>.
-                </p>
+                    adquiridas de <strong className="font-semibold text-slate-800 dark:text-slate-100">1 mês para 3 dias</strong>.
+                </motion.p>
 
-                <p className="max-w-xl text-gray-700 mb-6 px-2 leading-relaxed">
+                <motion.p variants={item} className="mt-3 max-w-xl px-2 leading-relaxed text-slate-600 dark:text-slate-300">
                     Formado em Engenharia Civil (UFSCar), cursando Engenharia da Computação (UNIVESP)
-                    e com certificação Full Stack pela <strong>Trybe</strong>. Inglês avançado.
-                </p>
+                    e com certificação Full Stack pela <strong className="font-semibold text-slate-800 dark:text-slate-100">Trybe</strong>. Inglês avançado.
+                </motion.p>
 
-                <div className="flex flex-wrap justify-center gap-2 mb-6">
+                <motion.div variants={item} className="mt-6 flex flex-wrap justify-center gap-2">
                     {techs.map((tech) => (
                         <span
                             key={tech}
-                            className="bg-blue-700 text-white text-sm font-medium px-3 py-1 rounded-full"
+                            className="rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700 dark:border-brand-400/20 dark:bg-brand-500/15 dark:text-brand-300"
                         >
                             {tech}
                         </span>
                     ))}
-                </div>
+                </motion.div>
 
-                <div className="flex gap-4">
+                <motion.div variants={item} className="mt-8 flex flex-wrap justify-center gap-3">
                     <a
                         href="https://www.linkedin.com/in/thiago-c-ferreira/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300"
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 px-5 py-2.5 font-semibold text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg"
                     >
-                        LinkedIn
+                        <FaLinkedin /> LinkedIn
                     </a>
                     <a
                         href="https://github.com/thiagocristhianferreira"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gray-800 hover:bg-black text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300"
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 font-semibold text-slate-700 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-slate-700/60 dark:text-slate-200 dark:hover:border-white/20 dark:hover:text-white"
                     >
-                        GitHub
+                        <FaGithub /> GitHub
                     </a>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
         </div>
     );
 }
