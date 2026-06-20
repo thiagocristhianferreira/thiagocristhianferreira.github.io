@@ -1,19 +1,7 @@
 import { motion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaJava, FaPython, FaJs, FaVuejs } from "react-icons/fa";
 
 const projetos = [
-    {
-        nome: "App de Mensagens — Front-end",
-        descricao: "Interface de chat desenvolvida em Vue.js, consumindo API REST com comunicação em tempo real.",
-        linguagem: "Vue.js",
-        url: "https://github.com/thiagocristhianferreira/app-message-front",
-    },
-    {
-        nome: "App de Mensagens — Back-end",
-        descricao: "API de mensagens em Java com arquitetura MVC, responsável pela lógica de negócio e persistência.",
-        linguagem: "Java",
-        url: "https://github.com/thiagocristhianferreira/app-message-back",
-    },
     {
         nome: "Cadastro de Especialidades",
         descricao: "Sistema Java para cadastro e gerenciamento de especialidades médicas com CRUD completo.",
@@ -27,28 +15,10 @@ const projetos = [
         url: "https://github.com/thiagocristhianferreira/app-chess",
     },
     {
-        nome: "Ping Domain Status",
-        descricao: "Ferramenta JavaScript para verificar o status de domínios, útil para monitoramento de disponibilidade.",
-        linguagem: "JavaScript",
-        url: "https://github.com/thiagocristhianferreira/pingDomainStatus",
-    },
-    {
-        nome: "API Java Demo",
-        descricao: "Primeira API REST construída em Java, demonstrando endpoints, mapeamento de rotas e boas práticas.",
-        linguagem: "Java",
-        url: "https://github.com/thiagocristhianferreira/api-java-demo",
-    },
-    {
-        nome: "Project Vue",
-        descricao: "Projeto de estudo e prática com Vue.js explorando componentes, reatividade e ciclo de vida.",
-        linguagem: "Vue.js",
-        url: "https://github.com/thiagocristhianferreira/project-vue",
-    },
-    {
-        nome: "JAVA CodeNation",
-        descricao: "Coleção de exercícios e desafios de programação em Java desenvolvidos durante a CodeNation.",
-        linguagem: "Java",
-        url: "https://github.com/thiagocristhianferreira/JAVA-codenation",
+        nome: "Project TING",
+        descricao: "Motor de busca de notícias em Python (Trybe is not Google), aplicando estruturas de dados como fila e pilha, processamento de arquivos TXT e índice invertido.",
+        linguagem: "Python",
+        url: "https://github.com/thiagocristhianferreira/project-ting",
     },
 ];
 
@@ -56,6 +26,14 @@ const corLinguagem = {
     "Vue.js": "bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-400/20",
     "Java": "bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-400/20",
     "JavaScript": "bg-yellow-50 text-yellow-700 border-yellow-100 dark:bg-yellow-500/15 dark:text-yellow-300 dark:border-yellow-400/20",
+    "Python": "bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-400/20",
+};
+
+const iconeLinguagem = {
+    "Java": FaJava,
+    "Python": FaPython,
+    "JavaScript": FaJs,
+    "Vue.js": FaVuejs,
 };
 
 const container = {
@@ -96,7 +74,9 @@ function Projetos() {
                     animate="show"
                     className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2"
                 >
-                    {projetos.map((projeto) => (
+                    {projetos.map((projeto) => {
+                        const IconeLinguagem = iconeLinguagem[projeto.linguagem];
+                        return (
                         <motion.a
                             key={projeto.nome}
                             variants={item}
@@ -108,7 +88,8 @@ function Projetos() {
                             <div>
                                 <div className="mb-2 flex items-start justify-between gap-2">
                                     <h3 className="font-display text-lg font-semibold leading-tight text-slate-900 dark:text-white">{projeto.nome}</h3>
-                                    <span className={`flex-shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${corLinguagem[projeto.linguagem] || "border-slate-100 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"}`}>
+                                    <span className={`flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${corLinguagem[projeto.linguagem] || "border-slate-100 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"}`}>
+                                        {IconeLinguagem && <IconeLinguagem className="text-sm" aria-hidden="true" />}
                                         {projeto.linguagem}
                                     </span>
                                 </div>
@@ -119,7 +100,8 @@ function Projetos() {
                                 <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
                             </span>
                         </motion.a>
-                    ))}
+                        );
+                    })}
                 </motion.div>
             </motion.div>
         </div>
