@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { FaArrowRight, FaJava, FaPython, FaJs, FaVuejs } from "react-icons/fa";
+import { FaArrowRight, FaExternalLinkAlt, FaJava, FaPython, FaJs, FaVuejs } from "react-icons/fa";
+import { SiTypescript } from "react-icons/si";
 
 const projetos = [
     {
@@ -20,6 +21,20 @@ const projetos = [
         linguagem: "Python",
         url: "https://github.com/thiagocristhianferreira/project-ting",
     },
+    {
+        nome: "Marvel App",
+        descricao: "Aplicação React + Redux Toolkit (RTK Query) em TypeScript que consome a API da Marvel, com busca, paginação, página de detalhes e favoritos.",
+        linguagem: "TypeScript",
+        url: "https://github.com/thiagocristhianferreira/projeto_marvel_app",
+        demo: "https://projetomarvelapp.netlify.app/",
+    },
+    {
+        nome: "Timer App",
+        descricao: "App de timer Pomodoro em React para gestão de foco e produtividade, com deploy na Netlify.",
+        linguagem: "JavaScript",
+        url: "https://github.com/thiagocristhianferreira/timer-app",
+        demo: "https://projeto-timer-app.netlify.app/",
+    },
 ];
 
 const corLinguagem = {
@@ -27,6 +42,7 @@ const corLinguagem = {
     "Java": "bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-400/20",
     "JavaScript": "bg-yellow-50 text-yellow-700 border-yellow-100 dark:bg-yellow-500/15 dark:text-yellow-300 dark:border-yellow-400/20",
     "Python": "bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-400/20",
+    "TypeScript": "bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-400/20",
 };
 
 const iconeLinguagem = {
@@ -34,6 +50,7 @@ const iconeLinguagem = {
     "Python": FaPython,
     "JavaScript": FaJs,
     "Vue.js": FaVuejs,
+    "TypeScript": SiTypescript,
 };
 
 const container = {
@@ -77,12 +94,9 @@ function Projetos() {
                     {projetos.map((projeto) => {
                         const IconeLinguagem = iconeLinguagem[projeto.linguagem];
                         return (
-                        <motion.a
+                        <motion.div
                             key={projeto.nome}
                             variants={item}
-                            href={projeto.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="group flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg dark:border-white/10 dark:bg-slate-800/60"
                         >
                             <div>
@@ -95,11 +109,29 @@ function Projetos() {
                                 </div>
                                 <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{projeto.descricao}</p>
                             </div>
-                            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600">
-                                Ver no GitHub
-                                <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
-                            </span>
-                        </motion.a>
+                            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                                {projeto.demo && (
+                                    <a
+                                        href={projeto.demo}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline underline-offset-2"
+                                    >
+                                        Ver online
+                                        <FaExternalLinkAlt className="text-xs transition-transform duration-300 group-hover/link:translate-x-0.5" />
+                                    </a>
+                                )}
+                                <a
+                                    href={projeto.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-brand-600 hover:underline underline-offset-2 dark:text-slate-400"
+                                >
+                                    Ver no GitHub
+                                    <FaArrowRight className="text-xs transition-transform duration-300 group-hover/link:translate-x-1" />
+                                </a>
+                            </div>
+                        </motion.div>
                         );
                     })}
                 </motion.div>
