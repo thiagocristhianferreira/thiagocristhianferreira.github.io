@@ -69,26 +69,11 @@ void main() {
 }
 `;
 
-// Detecta se a animação deve ficar "passiva" (estática) — em telas pequenas/touch
-// ou quando o usuário pede menos movimento. Nesses casos o canvas só renderiza
-// sob demanda (na troca de tema), em vez de rodar todo frame.
-function usePassiveAnimation() {
-  const [passive, setPassive] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 768px)');
-    const update = () => setPassive(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
-  return passive;
-}
-
 const SilkPlane = forwardRef(function SilkPlane(
   { uniforms, color, speed, scale, noiseIntensity, rotation, animate },
   ref
 ) {
-  const { viewport, invalidate } = useThree();
+  const { viewport } = useThree();
 
   // Cor-alvo: muda só quando o tema troca. Não recria o material.
   const targetColor = useMemo(() => new Color(...hexToNormalizedRGB(color)), [color]);
@@ -105,21 +90,14 @@ const SilkPlane = forwardRef(function SilkPlane(
     uniforms.uScale.value = scale;
     uniforms.uNoiseIntensity.value = noiseIntensity;
     uniforms.uRotation.value = rotation;
-    invalidate();
-  }, [uniforms, speed, scale, noiseIntensity, rotation, invalidate]);
-
-  // Ao trocar a cor (tema), pede frames para animar a transição mesmo em modo "demand".
-  useEffect(() => {
-    invalidate();
-  }, [targetColor, invalidate]);
+  }, [uniforms, speed, scale, noiseIntensity, rotation]);
 
   useFrame((_, delta) => {
     const mat = ref.current?.material;
     if (!mat) return;
     const u = mat.uniforms;
 
-    // O tempo só avança quando estamos animando de fato (respeita aba oculta /
-    // reduced-motion / mobile). Em modo estático o padrão fica congelado.
+    // Tempo avança quando a aba está visível (frameloop "always").
     if (animate) u.uTime.value += 0.1 * delta;
 
     // Lerp suave da cor atual rumo à cor-alvo — transição de tema sem tranco.
@@ -127,7 +105,6 @@ const SilkPlane = forwardRef(function SilkPlane(
     const dist = Math.abs(cur.r - targetColor.r) + Math.abs(cur.g - targetColor.g) + Math.abs(cur.b - targetColor.b);
     if (dist > 0.001) {
       cur.lerp(targetColor, Math.min(1, delta * 5));
-      if (!animate) invalidate(); // em modo "demand", encadeia frames até estabilizar
     } else if (!cur.equals(targetColor)) {
       cur.copy(targetColor);
     }
@@ -144,7 +121,6 @@ SilkPlane.displayName = 'SilkPlane';
 
 const Silk = ({ speed = 5, scale = 1, color = '#7B7481', noiseIntensity = 1.5, rotation = 0, dpr = [1, 2] }) => {
   const meshRef = useRef();
-  const passive = usePassiveAnimation();
   const [frameloop, setFrameloop] = useState('always');
 
   // Uniforms criados UMA única vez. Trocar de tema nunca recria o material WebGL
@@ -162,17 +138,14 @@ const Silk = ({ speed = 5, scale = 1, color = '#7B7481', noiseIntensity = 1.5, r
     []
   );
 
-  // Pausa a renderização quando a aba está oculta; em mobile/reduced-motion fica
-  // sob demanda; no desktop visível anima continuamente.
+  // Anima continuamente enquanto a aba está visível; pausa totalmente o render
+  // quando a aba está oculta (a GPU descansa em segundo plano).
   useEffect(() => {
-    const apply = () => {
-      if (document.hidden) setFrameloop('never');
-      else setFrameloop(passive ? 'demand' : 'always');
-    };
+    const apply = () => setFrameloop(document.hidden ? 'never' : 'always');
     apply();
     document.addEventListener('visibilitychange', apply);
     return () => document.removeEventListener('visibilitychange', apply);
-  }, [passive]);
+  }, []);
 
   return (
     <Canvas dpr={dpr} frameloop={frameloop}>

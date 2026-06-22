@@ -72,10 +72,11 @@ function Background() {
             <div className="fixed inset-0 -z-20 bg-gradient-to-b from-slate-50 via-brand-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-900" />
 
             <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-                {/* Silk renderizado em baixa resolução (dpr baixo) — a ampliação já
-                    suaviza/borra o padrão sem custo, e o blur-sm só lima as bordas.
-                    Isso evita o blur pesado por frame que travava a GPU. */}
-                <div className="absolute inset-0 scale-105 blur-sm">
+                {/* Silk em baixa resolução (dpr baixo): a ampliação pelo navegador já
+                    entrega o padrão suave/borrado de graça. Sem filtro CSS blur aqui —
+                    blur sobre um canvas que anima por frame força re-rasterização da
+                    tela inteira a cada frame e era o que pesava na GPU. */}
+                <div className="absolute inset-0 scale-105">
                     <Suspense fallback={null}>
                         <Silk speed={4} scale={1} color={silkColor} noiseIntensity={noiseIntensity} rotation={0} dpr={0.45} />
                     </Suspense>
