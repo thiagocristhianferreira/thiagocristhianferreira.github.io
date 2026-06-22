@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { FaArrowRight, FaExternalLinkAlt, FaJava, FaPython, FaJs, FaVuejs } from "react-icons/fa";
 import { SiTypescript } from "react-icons/si";
 
-const projetos = [
+const projetosEducacionais = [
     {
         nome: "Cadastro de Especialidades",
         descricao: "Sistema Java para cadastro e gerenciamento de especialidades médicas com CRUD completo.",
@@ -28,6 +28,9 @@ const projetos = [
         url: "https://github.com/thiagocristhianferreira/projeto_marvel_app",
         demo: "https://projetomarvelapp.netlify.app/",
     },
+];
+
+const desafios = [
     {
         nome: "Timer App",
         descricao: "App de timer Pomodoro em React para gestão de foco e produtividade, com deploy na Netlify.",
@@ -62,6 +65,67 @@ const item = {
     show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
+function ProjetoCard({ projeto }) {
+    const IconeLinguagem = iconeLinguagem[projeto.linguagem];
+    return (
+        <motion.div
+            variants={item}
+            className="group flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg dark:border-white/10 dark:bg-slate-800/60"
+        >
+            <div>
+                <div className="mb-2 flex items-start justify-between gap-2">
+                    <h3 className="font-display text-lg font-semibold leading-tight text-slate-900 dark:text-white">{projeto.nome}</h3>
+                    <span className={`flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${corLinguagem[projeto.linguagem] || "border-slate-100 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"}`}>
+                        {IconeLinguagem && <IconeLinguagem className="text-sm" aria-hidden="true" />}
+                        {projeto.linguagem}
+                    </span>
+                </div>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{projeto.descricao}</p>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                {projeto.demo && (
+                    <a
+                        href={projeto.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline underline-offset-2"
+                    >
+                        Ver online
+                        <FaExternalLinkAlt className="text-xs transition-transform duration-300 group-hover/link:translate-x-0.5" />
+                    </a>
+                )}
+                <a
+                    href={projeto.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-brand-600 hover:underline underline-offset-2 dark:text-slate-400"
+                >
+                    Ver no GitHub
+                    <FaArrowRight className="text-xs transition-transform duration-300 group-hover/link:translate-x-1" />
+                </a>
+            </div>
+        </motion.div>
+    );
+}
+
+function Categoria({ titulo, projetos, className = "" }) {
+    return (
+        <section className={className}>
+            <h3 className="font-display text-2xl font-bold text-slate-900 dark:text-white">{titulo}</h3>
+            <motion.div
+                variants={container}
+                initial="hidden"
+                animate="show"
+                className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2"
+            >
+                {projetos.map((projeto) => (
+                    <ProjetoCard key={projeto.nome} projeto={projeto} />
+                ))}
+            </motion.div>
+        </section>
+    );
+}
+
 function Projetos() {
     return (
         <div className="px-4 pb-16 pt-28">
@@ -85,56 +149,8 @@ function Projetos() {
                     </a>
                 </p>
 
-                <motion.div
-                    variants={container}
-                    initial="hidden"
-                    animate="show"
-                    className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2"
-                >
-                    {projetos.map((projeto) => {
-                        const IconeLinguagem = iconeLinguagem[projeto.linguagem];
-                        return (
-                        <motion.div
-                            key={projeto.nome}
-                            variants={item}
-                            className="group flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg dark:border-white/10 dark:bg-slate-800/60"
-                        >
-                            <div>
-                                <div className="mb-2 flex items-start justify-between gap-2">
-                                    <h3 className="font-display text-lg font-semibold leading-tight text-slate-900 dark:text-white">{projeto.nome}</h3>
-                                    <span className={`flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${corLinguagem[projeto.linguagem] || "border-slate-100 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"}`}>
-                                        {IconeLinguagem && <IconeLinguagem className="text-sm" aria-hidden="true" />}
-                                        {projeto.linguagem}
-                                    </span>
-                                </div>
-                                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{projeto.descricao}</p>
-                            </div>
-                            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                                {projeto.demo && (
-                                    <a
-                                        href={projeto.demo}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline underline-offset-2"
-                                    >
-                                        Ver online
-                                        <FaExternalLinkAlt className="text-xs transition-transform duration-300 group-hover/link:translate-x-0.5" />
-                                    </a>
-                                )}
-                                <a
-                                    href={projeto.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-brand-600 hover:underline underline-offset-2 dark:text-slate-400"
-                                >
-                                    Ver no GitHub
-                                    <FaArrowRight className="text-xs transition-transform duration-300 group-hover/link:translate-x-1" />
-                                </a>
-                            </div>
-                        </motion.div>
-                        );
-                    })}
-                </motion.div>
+                <Categoria titulo="Projetos Educacionais" projetos={projetosEducacionais} className="mt-8" />
+                <Categoria titulo="Desafios" projetos={desafios} className="mt-12" />
             </motion.div>
         </div>
     );
