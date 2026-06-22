@@ -1,32 +1,39 @@
 import { motion } from "framer-motion";
-import { FaArrowRight, FaExternalLinkAlt, FaJava, FaPython, FaJs, FaVuejs } from "react-icons/fa";
-import { SiTypescript } from "react-icons/si";
+import { FaArrowRight, FaExternalLinkAlt, FaJava, FaPython, FaJs, FaVuejs, FaReact, FaSitemap } from "react-icons/fa";
+import { SiTypescript, SiRedux } from "react-icons/si";
 
 const projetosEducacionais = [
     {
         nome: "Cadastro de Especialidades",
         descricao: "Sistema Java para cadastro e gerenciamento de especialidades médicas com CRUD completo.",
-        linguagem: "Java",
+        techs: ["java"],
         url: "https://github.com/thiagocristhianferreira/cadastro-especialidades",
     },
     {
         nome: "App Chess",
         descricao: "Jogo de xadrez desenvolvido em Java com regras completas, movimentos especiais e controle de turno.",
-        linguagem: "Java",
+        techs: ["java"],
         url: "https://github.com/thiagocristhianferreira/app-chess",
     },
     {
         nome: "Project TING",
         descricao: "Motor de busca de notícias em Python (Trybe is not Google), aplicando estruturas de dados como fila e pilha, processamento de arquivos TXT e índice invertido.",
-        linguagem: "Python",
+        techs: ["python"],
         url: "https://github.com/thiagocristhianferreira/project-ting",
     },
     {
         nome: "Marvel App",
         descricao: "Aplicação React + Redux Toolkit (RTK Query) em TypeScript que consome a API da Marvel, com busca, paginação, página de detalhes e favoritos.",
-        linguagem: "TypeScript",
+        techs: ["react", "typescript", "redux"],
         url: "https://github.com/thiagocristhianferreira/projeto_marvel_app",
         demo: "https://projetomarvelapp.netlify.app/",
+    },
+    {
+        nome: "Recipes App",
+        descricao: "Aplicação de receitas de comidas e bebidas (projeto Trybe) em React + Context API, consumindo APIs externas com busca, filtros, favoritos e compartilhamento.",
+        techs: ["react", "javascript", "contextapi"],
+        url: "https://github.com/thiagocristhianferreira/project-recipes-app",
+        demo: "https://app-recipes-project.netlify.app/",
     },
 ];
 
@@ -34,26 +41,21 @@ const desafios = [
     {
         nome: "Timer App",
         descricao: "App de timer Pomodoro em React para gestão de foco e produtividade, com deploy na Netlify.",
-        linguagem: "JavaScript",
+        techs: ["javascript"],
         url: "https://github.com/thiagocristhianferreira/timer-app",
         demo: "https://projeto-timer-app.netlify.app/",
     },
 ];
 
-const corLinguagem = {
-    "Vue.js": "bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-400/20",
-    "Java": "bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-400/20",
-    "JavaScript": "bg-yellow-50 text-yellow-700 border-yellow-100 dark:bg-yellow-500/15 dark:text-yellow-300 dark:border-yellow-400/20",
-    "Python": "bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-400/20",
-    "TypeScript": "bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-400/20",
-};
-
-const iconeLinguagem = {
-    "Java": FaJava,
-    "Python": FaPython,
-    "JavaScript": FaJs,
-    "Vue.js": FaVuejs,
-    "TypeScript": SiTypescript,
+const techRegistry = {
+    java: { label: "Java", Icon: FaJava, cor: "bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-400/20" },
+    python: { label: "Python", Icon: FaPython, cor: "bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-400/20" },
+    javascript: { label: "JavaScript", Icon: FaJs, cor: "bg-yellow-50 text-yellow-700 border-yellow-100 dark:bg-yellow-500/15 dark:text-yellow-300 dark:border-yellow-400/20" },
+    typescript: { label: "TypeScript", Icon: SiTypescript, cor: "bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-400/20" },
+    vue: { label: "Vue.js", Icon: FaVuejs, cor: "bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-400/20" },
+    react: { label: "React", Icon: FaReact, cor: "bg-cyan-50 text-cyan-700 border-cyan-100 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-400/20" },
+    redux: { label: "Redux", Icon: SiRedux, cor: "bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-500/15 dark:text-purple-300 dark:border-purple-400/20" },
+    contextapi: { label: "Context API", Icon: FaSitemap, cor: "bg-slate-50 text-slate-600 border-slate-100 dark:bg-white/5 dark:text-slate-300 dark:border-white/10" },
 };
 
 const container = {
@@ -66,21 +68,27 @@ const item = {
 };
 
 function ProjetoCard({ projeto }) {
-    const IconeLinguagem = iconeLinguagem[projeto.linguagem];
     return (
         <motion.div
             variants={item}
             className="group flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg dark:border-white/10 dark:bg-slate-800/60"
         >
             <div>
-                <div className="mb-2 flex items-start justify-between gap-2">
-                    <h3 className="font-display text-lg font-semibold leading-tight text-slate-900 dark:text-white">{projeto.nome}</h3>
-                    <span className={`flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${corLinguagem[projeto.linguagem] || "border-slate-100 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"}`}>
-                        {IconeLinguagem && <IconeLinguagem className="text-sm" aria-hidden="true" />}
-                        {projeto.linguagem}
-                    </span>
+                <h3 className="font-display text-lg font-semibold leading-tight text-slate-900 dark:text-white">{projeto.nome}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{projeto.descricao}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                    {projeto.techs.map((key) => {
+                        const tech = techRegistry[key];
+                        if (!tech) return null;
+                        const { label, Icon, cor } = tech;
+                        return (
+                            <span key={key} className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${cor}`}>
+                                <Icon className="text-sm" aria-hidden="true" />
+                                {label}
+                            </span>
+                        );
+                    })}
                 </div>
-                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{projeto.descricao}</p>
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
                 {projeto.demo && (
