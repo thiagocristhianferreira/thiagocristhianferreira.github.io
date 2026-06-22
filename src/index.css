@@ -37,3 +37,18 @@ html.dark body {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ---- Modo otimizado (html.lite) ----
+   Remove os efeitos caros de composição (backdrop-blur dos painéis/navbar/footer
+   e qualquer filtro blur) mantendo cores e layout. O fundo Silk é desmontado no
+   React (App.jsx). Também desativamos o scroll suave para navegação mais direta. */
+html.lite [class*="backdrop-blur"] {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html.lite [class*="blur-"] {
+  filter: none !important;
+}
+html.lite {
+  scroll-behavior: auto;
+}

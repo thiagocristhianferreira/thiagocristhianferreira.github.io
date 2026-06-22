@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 import { Suspense, lazy } from "react";
 
 import Home from "./pages/Home.jsx";
@@ -8,7 +8,9 @@ import FooterPage from "./components/FooterPage.jsx";
 import Cases from "./pages/Cases.jsx";
 import Curriculo from "./pages/Curriculo.jsx";
 import ThemeToggle from "./components/ThemeToggle.jsx";
+import PerfToggle from "./components/PerfToggle.jsx";
 import { useTheme } from "./context/ThemeContext.jsx";
+import { usePerf } from "./context/PerfContext.jsx";
 
 // Carregado sob demanda (não bloqueia o render inicial): o chunk com three.js
 // (~242KB gzip) baixa em paralelo enquanto a página já aparece.
@@ -49,7 +51,10 @@ function Navbar() {
                         </NavLink>
                     ))}
                     <span className="mx-1 hidden h-5 w-px bg-slate-200 dark:bg-white/10 sm:block" />
-                    <ThemeToggle />
+                    <div className="flex items-center gap-1.5">
+                        <PerfToggle />
+                        <ThemeToggle />
+                    </div>
                 </div>
             </div>
         </nav>
@@ -58,6 +63,7 @@ function Navbar() {
 
 function Background() {
     const { isDark } = useTheme();
+    const { lite } = usePerf();
 
     // Silk em ambos os temas, sempre animando.
     // Light: cor bem clara + véu branco para manter o texto legível.
@@ -68,22 +74,27 @@ function Background() {
 
     return (
         <>
-            {/* Base em gradiente atrás do Silk (fallback enquanto o chunk carrega) */}
+            {/* Base em gradiente. No modo otimizado é o único fundo (sem WebGL);
+                no modo completo serve de fallback enquanto o chunk do Silk carrega. */}
             <div className="fixed inset-0 -z-20 bg-gradient-to-b from-slate-50 via-brand-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-900" />
 
-            <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-                {/* Silk em baixa resolução (dpr baixo): a ampliação pelo navegador já
-                    entrega o padrão suave/borrado de graça. Sem filtro CSS blur aqui —
-                    blur sobre um canvas que anima por frame força re-rasterização da
-                    tela inteira a cada frame e era o que pesava na GPU. */}
-                <div className="absolute inset-0 scale-105">
-                    <Suspense fallback={null}>
-                        <Silk speed={4} scale={1} color={silkColor} noiseIntensity={noiseIntensity} rotation={0} dpr={0.45} />
-                    </Suspense>
+            {/* Modo otimizado: não monta o canvas WebGL (zera o custo de GPU por frame
+                e nem baixa o chunk do three.js). O layout/cores ficam idênticos. */}
+            {!lite && (
+                <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+                    {/* Silk em baixa resolução (dpr baixo): a ampliação pelo navegador já
+                        entrega o padrão suave/borrado de graça. Sem filtro CSS blur aqui —
+                        blur sobre um canvas que anima por frame força re-rasterização da
+                        tela inteira a cada frame e era o que pesava na GPU. */}
+                    <div className="absolute inset-0 scale-105">
+                        <Suspense fallback={null}>
+                            <Silk speed={4} scale={1} color={silkColor} noiseIntensity={noiseIntensity} rotation={0} dpr={0.45} />
+                        </Suspense>
+                    </div>
+                    {/* Véu para legibilidade / suavizar o padrão */}
+                    <div className={`absolute inset-0 ${veil}`} />
                 </div>
-                {/* Véu para legibilidade / suavizar o padrão */}
-                <div className={`absolute inset-0 ${veil}`} />
-            </div>
+            )}
         </>
     );
 }
@@ -103,19 +114,24 @@ function AnimatedRoutes() {
 }
 
 function App() {
+    const { lite } = usePerf();
     return (
         <Router>
-            <div className="relative flex min-h-screen flex-col overflow-x-hidden font-sans">
-                <Background />
+            {/* No modo otimizado desligamos as animações (framer-motion) para um
+                render mais leve, mantendo o conteúdo e o layout. */}
+            <MotionConfig reducedMotion={lite ? "always" : "never"}>
+                <div className="relative flex min-h-screen flex-col overflow-x-hidden font-sans">
+                    <Background />
 
-                <Navbar />
+                    <Navbar />
 
-                <main className="relative z-10 flex-1">
-                    <AnimatedRoutes />
-                </main>
+                    <main className="relative z-10 flex-1">
+                        <AnimatedRoutes />
+                    </main>
 
-                <FooterPage />
-            </div>
+                    <FooterPage />
+                </div>
+            </MotionConfig>
         </Router>
     );
 }
