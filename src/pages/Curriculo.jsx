@@ -5,7 +5,7 @@ const skills = [
     "Lógica de programação avançada",
     "React, Redux, Context API, Next.js",
     "Vue.js, Node.js, NestJS",
-    "Java, Spring, .NET",
+    "Java, Spring, C#, .NET",
     "TypeScript, JavaScript, PHP",
     "MySQL, MongoDB",
     "Git e GitHub",

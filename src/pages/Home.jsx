@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const techs = [
-    "Java", "Spring", "Node.js", ".NET", "NestJS",
+    "Java", "Spring", "C#", ".NET", "Node.js", "NestJS",
     "TypeScript", "JavaScript", "Vue.js", "React", "Redux", "Context API", "Next.js",
     "PHP", "MySQL", "MongoDB", "Git", "Grafana", "Figma", "Linux/Unix",
 ];
