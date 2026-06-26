@@ -63,10 +63,41 @@ function Curriculo() {
                 </div>
 
                 <section>
-                    <SectionTitle>Objetivo</SectionTitle>
-                    <p className="leading-relaxed text-slate-600 dark:text-slate-300">
-                        Busco oportunidade como desenvolvedor Full Stack para aplicar conhecimentos adquiridos
-                        e também evoluir como pessoa e como profissional.
+                    <SectionTitle>Sobre mim</SectionTitle>
+                    <p className="mb-4 leading-relaxed text-slate-600 dark:text-slate-300">
+                        Sou Desenvolvedor Full Stack com foco em resolver problemas reais de negócio — não apenas
+                        escrever código, mas entregar <strong className="text-slate-800 dark:text-slate-100">impacto mensurável</strong>.
+                    </p>
+                    <ul className="space-y-3 text-slate-600 dark:text-slate-300">
+                        <li className="flex gap-3">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
+                            <span><strong className="text-slate-800 dark:text-slate-100">Integração e migração de dados</strong> — reduzi o
+                                tempo de uma migração crítica de <strong className="text-slate-800 dark:text-slate-100">1 mês para 3 dias</strong>,
+                                garantindo continuidade operacional em processos de M&amp;A.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
+                            <span><strong className="text-slate-800 dark:text-slate-100">Automação de processos de negócio</strong> —
+                                desenvolvi APIs que centralizam regras de negócio e eliminam trabalho manual, transformando
+                                relatórios .CSV em chamados e ordens de serviço em escala.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
+                            <span><strong className="text-slate-800 dark:text-slate-100">Estabilização e confiabilidade de sistemas</strong> —
+                                atuo na linha de frente em produção: investigação, diagnóstico e correção de falhas com foco em
+                                reduzir o tempo de indisponibilidade.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
+                            <span><strong className="text-slate-800 dark:text-slate-100">Observabilidade</strong> — monitoramento de
+                                aplicações com Grafana, antecipando falhas antes que virem incidentes.</span>
+                        </li>
+                    </ul>
+                    <p className="mt-4 leading-relaxed text-slate-600 dark:text-slate-300">
+                        Engenheiro de formação, com mentalidade orientada a qualidade: código limpo, cobertura de testes e
+                        decisões técnicas embasadas no <em>porquê</em> — não apenas no <em>como</em>. Gosto de entender o
+                        problema a fundo antes de escrever a primeira linha. É isso que diferencia software que funciona de
+                        software que resolve.
                     </p>
                 </section>
 
